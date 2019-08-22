@@ -1,140 +1,6 @@
 " nvim config
 " sneaky
 
-" vim plug {{{
-call plug#begin('~/.config/nvim/plugged')
-
-" browsing
-Plug 'yuratomo/w3m.vim'
-
-" Plug 'hhsnopek/vim-firewatch'
-" development
-Plug 'morhetz/gruvbox'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'sheerun/vim-polyglot'
-Plug 'tpope/vim-fugitive'
-Plug 'junegunn/goyo.vim'
-Plug 'chrisbra/Colorizer'
-
-" parentheses
-Plug 'tpope/vim-surround', { 'for': ['clojure', 'javascript', 'javascript.jsx'] }
-
-" sql
-" Plug 'has2k1/sql.vim', { 'for': 'sql' }
-Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
-
-" clojure
-Plug 'guns/vim-sexp', { 'for': 'clojure' }
-Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-" Plug 'tpope/vim-salve', { 'for': 'clojure' }
-
-" go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}
-
-" linter
-Plug 'w0rp/ale', {'for': ['javascript', 'javascript.jsx', 'elixir', 'clojure']}
-
-" javascript
-Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
-Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
-Plug 'flowtype/vim-flow', {'for': ['javascript', 'javascript.jsx']}
-
-" elixir
-Plug 'elixir-editors/vim-elixir'
-Plug 'slashmili/alchemist.vim', {'for': 'elixir'}
-Plug 'digitaltoad/vim-pug'
-
-" docker
-" Plug 'ekalinin/Dockerfile.vim', {'for': 'dockerfile'}
-
-call plug#end()
-" }}}
-" gruvbox {{{
-let g:gruvbox_italic = 1
-let g:gruvbox_contrast_dark = 'hard'
-let g:gruvbox_invert_selection = 0
-let g:gruvbox_improved_string = 1
-" }}}
-" vim-deoplete {{{
-let g:deoplete#enable_at_startup = 1
-" }}}
-" vim-go {{{
-let g:go_highlight_array_whitespace_error = 1
-let g:go_highlight_chan_whitespace_error = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_space_tab_error = 1
-let g:go_highlight_trailing_whitespace_error = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_function_arguments = 1
-let g:go_highlight_function_calls = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_types = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_variable_assignments = 1
-let g:go_highlight_variable_declarations = 1
-" }}}
-" javascript & jsx {{{
-let g:javascript_plugin_flow = 1
-
-" colorscheme
-hi! link jsClassProperty GruvboxGreen
-" }}}
-" clojure {{{
-let g:clojure_maxlines = 333
-let g:clojure_fuzzy_indent_patterns = ['^with', '^def', '^let'
-      \, '^go'
-      \, '^query$', '^render$', '^ident$', '^initLocalState$'
-      \, '^componentWill', '^componentDid'
-      \, 'context$', 'resource$'
-      \, '^action$']
-
-
-let g:clojure_syntax_keywords = {
-      \  'clojureDefine': ["defui"]
-      \, 'clojureConst': ["ident", "query", "render"]}
-
-" autocmd BufRead *.clj* setlocal foldmethod=syntax foldnestmax=1
-" }}}
-" elixir {{{
-let g:alchemist_compile_basepath = '/app/'
-" }}}
-" pgsql {{{
-let g:sql_type_default = 'pgsql'
-" }}}
-" FZF {{{
-let $FZF_DEFAULT_COMMAND = 'fd --type f'
-" let $FZF_DEFAULT_OPTS .= '--inline-info'
-" bugfix maybe fixed
-" let g:fzf_layout = { 'window': 'enew' }
-let g:fzf_buffers_jump = 1
-" }}}
-" ale {{{
-let g:ale_linters = {
-      \'javascript': ['eslint'],
-      \'javascript.jsx': ['eslint'],
-      \'elixir': ['mix']}
-      " \'elixir': ['mix', 'elixir-ls']}
-let g:ale_fixers = {
-      \'javascript': ['prettier_eslint', 'eslint'],
-      \'elixir': ['mix_format']}
-
-let g:ale_set_balloons = 1
-let g:ale_fix_on_save = 1
-" let g:ale_elixir_elixir_ls_release = '/home/j/.elixir_ls/rel'
-
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-" }}}
-" env {{{
-" let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-" }}}
 " vars {{{
 syntax on
 filetype indent plugin on
@@ -167,6 +33,80 @@ set si
 set nu
 set undofile
 " }}}
+" vim plug {{{
+call plug#begin('~/.config/nvim/plugged')
+
+" browsing
+" Plug 'yuratomo/w3m.vim'
+
+" Plug 'hhsnopek/vim-firewatch'
+" development
+" Plug 'morhetz/gruvbox'
+Plug 'sainnhe/edge'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-fugitive'
+Plug 'junegunn/goyo.vim'
+Plug 'chrisbra/Colorizer'
+" parentheses
+Plug 'tpope/vim-surround'
+
+" sql
+" Plug 'has2k1/sql.vim', { 'for': 'sql' }
+Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
+
+" clojure
+Plug 'guns/vim-sexp', { 'for': 'clojure' }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+" Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+" Plug 'tpope/vim-salve', { 'for': 'clojure' }
+
+" go
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}
+
+" linter
+" Plug 'w0rp/ale', {'for': ['javascript', 'javascript.jsx', 'clojure']}
+
+" javascript
+Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
+Plug 'mxw/vim-jsx', {'for': ['javascript', 'javascript.jsx']}
+Plug 'flowtype/vim-flow', {'for': ['javascript', 'javascript.jsx']}
+
+" elixir
+Plug 'elixir-editors/vim-elixir'
+Plug 'digitaltoad/vim-pug'
+
+" docker
+" Plug 'ekalinin/Dockerfile.vim', {'for': 'dockerfile'}
+
+call plug#end()
+" }}}
+" colorscheme {{{
+" overrides
+function! s:patch_colorscheme()
+  " bg #262729
+  hi! link elixirAlias Yellow
+  hi! link elixirDefine Yellow
+  hi! link elixirModuleDefine Yellow
+  hi! link elixirModuleDeclaration Yellow
+  hi! link elixirVariable Purple
+  hi! link elixirInclude Blue
+  hi CursorLine guibg=#262729 guifg=NONE
+  hi CursorLineNr guibg=#262729 guifg=NONE
+  hi CursorLineNr guibg=#262729 guifg=NONE
+endfunction
+
+autocmd! Colorscheme edge call s:patch_colorscheme()
+
+set background=dark
+let g:edge_transparent_background = 1
+colorscheme edge
+" }}}
 " foldtext {{{
 function! CustomFoldtext()
     " remove comments
@@ -188,12 +128,21 @@ set foldtext=CustomFoldtext()
 " colorscheme {{{
 " overrides
 function! s:patch_colorscheme()
-  hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+  " bg #262729
+  hi! link elixirAlias Yellow
+  hi! link elixirDefine Yellow
+  hi! link elixirModuleDefine Yellow
+  hi! link elixirModuleDeclaration Yellow
+  hi! link elixirVariable Purple
+  hi! link elixirInclude Blue
+  hi CursorLine guibg=#262729 guifg=NONE
+  hi CursorLineNr guibg=#262729 guifg=NONE
 endfunction
 
-autocmd! Colorscheme gruvbox call s:patch_colorscheme()
+autocmd! Colorscheme edge call s:patch_colorscheme()
 
-colorscheme gruvbox
+set background=dark
+colorscheme edge
 " }}}
 " key bindings {{{
 " normal mode {{{
@@ -221,6 +170,28 @@ inoremap <silent><expr> <TAB>
 " }}}
 
 " }}}
+" FZF {{{
+let $FZF_DEFAULT_COMMAND = 'fd --type f'
+" let $FZF_DEFAULT_OPTS .= '--color fg:#b7bec9,bg:#262729,hl:#5ebaa5,fg+:#b7bec9,bg+:#262729,hl+:#5ebaa5 --color info:#a1bf78,prompt:#a1bf78,pointer:#5ebaa5,marker:#5ebaa5,header:#a1bf78'
+" let $FZF_DEFAULT_OPTS .= '--inline-info'
+" bugfix maybe fixed
+" let g:fzf_layout = { 'window': 'enew' }
+let g:fzf_buffers_jump = 1
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Cyan'],
+  \ 'fg+':     ['fg', 'Normal'],
+  \ 'bg+':     ['bg', 'Normal'],
+  \ 'hl+':     ['fg', 'Cyan'],
+  \ 'info':    ['fg', 'Green'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Green'],
+  \ 'pointer': ['fg', 'Cyan'],
+  \ 'marker':  ['fg', 'Cyan'],
+  \ 'spinner': ['fg', 'Cyan'],
+  \ 'header':  ['fg', 'Green'] }
+" }}}
 " autocmd {{{
 
 " restore last position
@@ -243,4 +214,3 @@ autocmd BufWritePre * call TrimWhitespace()
 
 
 " }}}
-

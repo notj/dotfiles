@@ -1,6 +1,3 @@
-[User]
-  name = John Joseph Ugalino
-  email = jjrugalino@gmail.com
 [core]
 	editor = nvim
 [color "branch"]
