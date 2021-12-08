@@ -17,7 +17,7 @@ font pango:DejaVu Sans Mono 16
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
+# font pango:DejaVu Sans Mono 8
 
 # The combination of xss-lock, nm-applet and pactl is a popular choice, so
 # they are included here as an example. Modify as you see fit.
@@ -112,16 +112,16 @@ set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
 
-workspace $ws1 output HDMI-0
-workspace $ws2 output HDMI-0
-workspace $ws3 output HDMI-0
-workspace $ws4 output HDMI-0
-workspace $ws5 output HDMI-0
-workspace $ws6 output DP-4 HDMI-0
-workspace $ws7 output DP-4 HDMI-0
-workspace $ws8 output DP-4 HDMI-0
-workspace $ws9 output DP-4 HDMI-0
-workspace $ws0 output DP-4 HDMI-0
+workspace $ws1 output DP-4
+workspace $ws2 output DP-4
+workspace $ws3 output DP-4
+workspace $ws4 output DP-4
+workspace $ws5 output DP-4
+workspace $ws6 output HDMI-0 DP-4
+workspace $ws7 output HDMI-0 DP-4
+workspace $ws8 output HDMI-0 DP-4
+workspace $ws9 output HDMI-0 DP-4
+workspace $ws10 output HDMI-0 DP-4
 
 # switch to workspace
 bindsym $mod+1 workspace number $ws1
@@ -146,6 +146,9 @@ bindsym $mod+Shift+7 move container to workspace number $ws7
 bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
+
+# back and forth
+bindsym $mod+Tab workspace back_and_forth
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -190,8 +193,8 @@ bindsym $mod+r mode "resize"
 #
 
 # gaps settings
-gaps outer 8
-gaps inner 32
+gaps outer 4
+gaps inner 16
 # smart_gaps on
 focus_follows_mouse no
 new_window normal 0 px
@@ -203,24 +206,26 @@ client.unfocused        #1d2021 #1d2021 #888888 #1d2021 #1d2021
 client.urgent           #fb4934 #fb4934 #ffffff #fb4934 #fb4934
 client.placeholder      #000000 #0c0c0c #ffffff #000000 #0c0c0c
 
+# border
+# default_border pixel 1
+# default_floating_border pixel 1
+
 # assignments
 assign [title="Steam"] $ws5
 assign [title="Dota 2"] $ws5
 
 # window settings
-for_window [class=".*"] title_format "<span font='Inconsolata 10'> > %instance / %title </span>"
+ for_window [class=".*"] title_format "<span font='Inconsolata 10'> > %instance / %title </span>"
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-# for_window [class="Xfce4-terminal"] border pixel 0
 for_window [class="Steam"] floating enable
 for_window [class="Steam" title="^Steam$"] floating disable
 for_window [title="Steam - Update News"] kill
 for_window [title="Steam - News"] kill
-# for_window [class=".*"] border pixel 0
+for_window [class=".*"] border pixel 0
 
 # personal keybinds
-# bindsym control+$mod+l exec $HOME/bin/lock
-# bindsym control+space exec rofi -show run -fullscreen -run-command "/bin/zsh -i -c {cmd}"
+bindsym control+$mod+shift+l exec xsecurelock
 bindsym control+Print exec "scrot $HOME/images/%Y%m%d_%H%M%S.png"
 bindsym --release Print exec "scrot -s $HOME/images/%Y%m%d_%H%M%S.png"
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -238,4 +243,4 @@ bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOU
 
 # init
 exec --no-startup-id picom -b --config ~/.picom.conf
-exec --no-startup-id feh --bg-scale $HOME/.config/bg.jpg
+# exec --no-startup-id nitrogen --restore

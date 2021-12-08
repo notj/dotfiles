@@ -17,7 +17,7 @@ rofi.modi: window,run,ssh,combi
 rofi.line-margin: 0
 rofi.line-padding: 8
 rofi.window-format: {c} {t}
-! rofi.font: Overpass Light 14
+rofi.theme: squared-nord
 ! }}}
 ! urxvt {{{
 urxvt.scrollBar: false
@@ -62,4 +62,3 @@ urxvt.cursorBlink: true
 *.color14: cyan
 *.color15: white
 ! }}}
-

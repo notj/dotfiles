@@ -1,4 +1,5 @@
 ! Xmodmap
+clear Lock
 clear control
 clear mod4
 

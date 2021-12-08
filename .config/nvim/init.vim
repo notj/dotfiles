@@ -36,25 +36,25 @@ set undofile
 " vim plug {{{
 call plug#begin('~/.config/nvim/plugged')
 
-" browsing
-" Plug 'yuratomo/w3m.vim'
-
-" Plug 'hhsnopek/vim-firewatch'
-" development
-" Plug 'morhetz/gruvbox'
+" colorscheme
 Plug 'sainnhe/edge'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+
+" search
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-" Plug 'sheerun/vim-polyglot'
+
+" git
 Plug 'tpope/vim-fugitive'
-Plug 'junegunn/goyo.vim'
-Plug 'chrisbra/Colorizer'
-" parentheses
+
+" completions
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-ragtag'
+
+" file
+Plug 'tpope/vim-vinegar'
 
 " sql
-" Plug 'has2k1/sql.vim', { 'for': 'sql' }
 Plug 'lifepillar/pgsql.vim', { 'for': 'sql' }
 
 " clojure
@@ -62,15 +62,9 @@ Plug 'guns/vim-sexp', { 'for': 'clojure' }
 Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
 Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-" Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-" Plug 'tpope/vim-salve', { 'for': 'clojure' }
 
 " go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}
-
-" linter
-" Plug 'w0rp/ale', {'for': ['javascript', 'javascript.jsx', 'clojure']}
 
 " javascript
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
@@ -79,10 +73,9 @@ Plug 'flowtype/vim-flow', {'for': ['javascript', 'javascript.jsx']}
 
 " elixir
 Plug 'elixir-editors/vim-elixir'
-Plug 'digitaltoad/vim-pug'
 
-" docker
-" Plug 'ekalinin/Dockerfile.vim', {'for': 'dockerfile'}
+" tf
+Plug 'hashivim/vim-terraform', {'for': 'tf'}
 
 call plug#end()
 " }}}
@@ -90,12 +83,22 @@ call plug#end()
 " overrides
 function! s:patch_colorscheme()
   " bg #262729
-  hi! link elixirAlias Yellow
-  hi! link elixirDefine Yellow
-  hi! link elixirModuleDefine Yellow
-  hi! link elixirModuleDeclaration Yellow
-  hi! link elixirVariable Purple
   hi! link elixirInclude Blue
+  hi! link elixirModuleDeclaration Yellow
+
+  hi! link elixirDefine Red
+  hi! link elixirModuleDefine Red
+  hi! link elixirPrivateDefine Red
+  hi! link elixirBlockDefinition Red
+
+  hi! link elixirOperator Blue
+  hi! link elixirKeyword Blue
+
+  hi! link elixirAlias Yellow
+  hi! link elixirAtom Cyan
+  hi! link elixirExUnitMacro Red
+
+  " hi! link elixirVariable Purple
   hi CursorLine guibg=#262729 guifg=NONE
   hi CursorLineNr guibg=#262729 guifg=NONE
   hi CursorLineNr guibg=#262729 guifg=NONE
@@ -124,25 +127,6 @@ function! CustomFoldtext()
     return line . expansionString . foldSizeStr . foldLevelStr
 endf
 set foldtext=CustomFoldtext()
-" }}}
-" colorscheme {{{
-" overrides
-function! s:patch_colorscheme()
-  " bg #262729
-  hi! link elixirAlias Yellow
-  hi! link elixirDefine Yellow
-  hi! link elixirModuleDefine Yellow
-  hi! link elixirModuleDeclaration Yellow
-  hi! link elixirVariable Purple
-  hi! link elixirInclude Blue
-  hi CursorLine guibg=#262729 guifg=NONE
-  hi CursorLineNr guibg=#262729 guifg=NONE
-endfunction
-
-autocmd! Colorscheme edge call s:patch_colorscheme()
-
-set background=dark
-colorscheme edge
 " }}}
 " key bindings {{{
 " normal mode {{{
@@ -211,6 +195,12 @@ function TrimWhitespace()
   endif
 endfunction
 autocmd BufWritePre * call TrimWhitespace()
+
+" terminal escape compat with fzf
+if has("nvim")
+  au! TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
+  au! FileType fzf tunmap <buffer> <Esc>
+endif
 
 
 " }}}
