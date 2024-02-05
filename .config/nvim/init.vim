@@ -37,7 +37,12 @@ set undofile
 call plug#begin('~/.config/nvim/plugged')
 
 " colorscheme
-Plug 'sainnhe/edge'
+" Plug 'sainnhe/edge'
+" Plug 'sainnhe/everforest'
+Plug 'sainnhe/sonokai'
+" Plug 'olimorris/onedarkpro.nvim'
+" Plug 'AlexvZyl/nordic.nvim', { 'branch': 'main' }
+" Plug 'EdenEast/nightfox.nvim'
 
 " search
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -64,7 +69,7 @@ Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
 Plug 'venantius/vim-cljfmt', { 'for': 'clojure' }
 
 " go
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}
+" Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries', 'for': 'go'}
 
 " javascript
 Plug 'pangloss/vim-javascript', {'for': ['javascript', 'javascript.jsx']}
@@ -77,38 +82,48 @@ Plug 'elixir-editors/vim-elixir'
 " tf
 Plug 'hashivim/vim-terraform', {'for': 'tf'}
 
+" lsp
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 call plug#end()
 " }}}
 " colorscheme {{{
 " overrides
 function! s:patch_colorscheme()
   " bg #262729
-  hi! link elixirInclude Blue
-  hi! link elixirModuleDeclaration Yellow
 
-  hi! link elixirDefine Red
-  hi! link elixirModuleDefine Red
-  hi! link elixirPrivateDefine Red
-  hi! link elixirBlockDefinition Red
+  " hi! link elixirInclude Blue
+  " hi! link elixirVariable Blue
+  " hi! link elixirModuleDeclaration Yellow
 
-  hi! link elixirOperator Blue
-  hi! link elixirKeyword Blue
+  " hi! link elixirDefine Red
+  " hi! link elixirModuleDefine Red
+  " hi! link elixirPrivateDefine Red
+  " hi! link elixirBlockDefinition Red
 
-  hi! link elixirAlias Yellow
-  hi! link elixirAtom Cyan
-  hi! link elixirExUnitMacro Red
+  " hi! link elixirOperator Blue
+  " hi! link elixirKeyword Blue
+
+  " hi! link elixirAlias Yellow
+  " hi! link elixirAtom Cyan
+  " hi! link elixirExUnitMacro Red
 
   " hi! link elixirVariable Purple
+
   hi CursorLine guibg=#262729 guifg=NONE
   hi CursorLineNr guibg=#262729 guifg=NONE
   hi CursorLineNr guibg=#262729 guifg=NONE
 endfunction
 
-autocmd! Colorscheme edge call s:patch_colorscheme()
+autocmd! Colorscheme sonokai call s:patch_colorscheme()
 
 set background=dark
 let g:edge_transparent_background = 1
-colorscheme edge
+let g:everforest_transparent_background = 1
+let g:sonokai_transparent_background = 1
+let g:sonokai_style = 'espresso'
+
+colorscheme sonokai
 " }}}
 " foldtext {{{
 function! CustomFoldtext()
@@ -132,9 +147,10 @@ set foldtext=CustomFoldtext()
 " normal mode {{{
 nnoremap <silent><F11> :Goyo<CR>
 nnoremap <silent><S-P> :Ag<CR>
-nnoremap <silent><C-P> :FZF<CR>
+nnoremap <silent><C-P> :Files<CR>
 nnoremap <silent><ESC> :nohl<CR>
-nnoremap <silent><F4> :qa<CR>
+" nnoremap <silent><F4> :qa<CR>
+nnoremap <silent>cp :let @+ = expand("%:p")<CR>
 
 " highlight binding
 nnoremap <F10> :call <SID>SynStack()<CR>
@@ -152,10 +168,10 @@ inoremap <silent><expr> <TAB>
 " terminal mode {{{
 " tnoremap <Esc> <C-\><C-n>
 " }}}
-
 " }}}
 " FZF {{{
-let $FZF_DEFAULT_COMMAND = 'fd --type f'
+let $FZF_DEFAULT_COMMAND = 'ag --hidden --ignore .git -g ""'
+"
 " let $FZF_DEFAULT_OPTS .= '--color fg:#b7bec9,bg:#262729,hl:#5ebaa5,fg+:#b7bec9,bg+:#262729,hl+:#5ebaa5 --color info:#a1bf78,prompt:#a1bf78,pointer:#5ebaa5,marker:#5ebaa5,header:#a1bf78'
 " let $FZF_DEFAULT_OPTS .= '--inline-info'
 " bugfix maybe fixed
@@ -175,6 +191,25 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Cyan'],
   \ 'spinner': ['fg', 'Cyan'],
   \ 'header':  ['fg', 'Green'] }
+
+" enable file quickfix list
+" An action can be a reference to a function that processes selected lines
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" set default ag options
+let $AG_DEFAULT_OPTIONS = '--hidden --ignore .git'
+let g:fzf_preview_window = ['right:50%', 'ctrl-_']
+command! -bang -nargs=* Ag call fzf#vim#ag(<q-args>, $AG_DEFAULT_OPTIONS, fzf#vim#with_preview(), <bang>0)
 " }}}
 " autocmd {{{
 
@@ -201,6 +236,19 @@ if has("nvim")
   au! TermOpen * tnoremap <buffer> <Esc> <c-\><c-n>
   au! FileType fzf tunmap <buffer> <Esc>
 endif
-
-
+" }}}
+" treesitter {{{
+lua << EOF
+require'nvim-treesitter.configs'.setup {
+  ensure_installed = {"elixir", "heex", "eex"}, -- only install parsers for elixir and heex
+  -- ensure_installed = "all", -- install parsers for all supported languages
+  sync_install = false,
+  ignore_install = { },
+  highlight = {
+    enable = true,
+    disable = { },
+    additional_vim_regex_highlighting = true,
+  },
+}
+EOF
 " }}}
